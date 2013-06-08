@@ -16,8 +16,12 @@ public:
 
   void run() {
     while(1){
+      if (periodTime == 30 && NOW()/SECONDS >= 30){
+	suspendCallerUntil(END_OF_TIME);      
+      }
       xprintf("%lld by Thread: %s, called %lld times\n", NOW(),name,callCount);
       FFLUSH();
+      
       callCount++;
       suspendCallerUntil(NOW()+periodTime*SECONDS);
     }
