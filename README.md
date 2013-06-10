@@ -43,6 +43,7 @@ In the picture below you can see a terminal window with the lettre "R" in the le
 This is your robot you shall move to the target "#". You can set speed and direction of the robot by publishing the appropriate middleware topic. There are 5 other topics to get the status of the robot and the position of the traget. The middleware topics are defined in "robot_topics.h".
 
 ![Alt text](/console.png)
+
 a) use one (or more) simple subscriber (and a thread) 
 
 b) use one (or more) fifo as subscriber (and a thread)
