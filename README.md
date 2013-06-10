@@ -6,7 +6,7 @@ Collected works of my RODOS projects
 [WIKI - RODOS](http://en.wikipedia.org/wiki/Rodos_\(operating_system\) "WIKI")
 
 
-[Task 1](/tree/master/Task1)
+[Task 1](/Task1)
 =======
 1 Write a thread-class that outputs "Hello World" and the threadname once.
 
@@ -28,7 +28,7 @@ class RingElement : public Thread {...};
 RingElement a("A"), b("B"), c("C"), ...;
 Output: A B C D E F G H A B C D E F G H ... (or vice versa)
 
-[Task 2](/tree/master/Task2)
+[Task 2](/Task2)
 ========
 1) Working with global variables
 
