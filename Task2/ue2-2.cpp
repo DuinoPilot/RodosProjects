@@ -1,5 +1,6 @@
 #include "rodos.h"
 #include "robot_topics.h"
+#include <stdlib.h>  
 
 int speed = 10;
 char dir;
@@ -36,8 +37,12 @@ bool robotIsOnTarget(){
 }
 
 void printRobotStatus(){
-  xprintf("Dir: %c, Speed: %d\n Robot: (%ld|%ld), Target(%ld|%ld)\n", 
+  xprintf("\t\t\t\t\t\t\t\t\tDir: %c, Speed: %d, Robot: (%ld|%ld), Target(%ld|%ld)\n", 
     dir, speed,myRobotX,myRobotY,myTargetX,myTargetY);
+}
+
+int calcDist(){
+  return abs(myRobotX - myTargetX) * abs(myRobotY - myTargetY);
 }
 
 class DirectionPublisher : public Thread {
@@ -71,44 +76,25 @@ class SpeedPublisher : public Thread{
 public:
   SpeedPublisher() : Thread("SpeedPublisher"){
   }
+  void init(){
+    commandSpeed.publishConst(speed);
+  }
 
   void run(){
-    TIME_LOOP(1*MILLISECONDS, 1 * MILLISECONDS){
+    TIME_LOOP(55 * MILLISECONDS, 55 * MILLISECONDS){
       if(!robotIsOnTarget()){
-          commandSpeed.publishConst(speed);
-          // switch(dir){
-          //   case 'D':
-          //   diff = myTargetY - myRobotY;
-          //   break;
-          //   case 'U':
-          //   diff = myRobotY - myTargetY;
-          //   break;
-          //   case 'R':
-          //   diff = myTargetX - myRobotX;
-          //   break;
-          //   case 'L':
-          //   diff = myRobotX - myTargetX;
-          //   break;
-          //   default:
-          //   diff = 1;
-          //   break;
-          // }
-          // if(diff >= 10){
-          //   speed = 10;
-          // }
-          // else{
-          //   speed = diff;
-          // }
-          // xprintf("Speed: %d, Diff: %ld", speed, diff);
-          // FFLUSH();
-          // commandSpeed.publishConst(speed);
+          if(calcDist() <= 2){
+            speed = 3;
+            commandSpeed.publishConst(speed);
+          }else if(speed != 10){
+            speed = 10;
+            commandSpeed.publishConst(speed);
+          }
+      }else{
+        speed = 0;
+        commandSpeed.publishConst(speed);
       }
-      // else{
-      //    //stop when robot has reached target
-      //   speed = 0;
-      //   commandSpeed.publishConst(speed);
-      //   xprintf("YEAH!");
-      //  }
+      //printRobotStatus();
     }
   }
 };

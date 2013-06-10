@@ -3,6 +3,7 @@
 static Application module01("Uebung2", 2000);
 
 volatile long int cnt = 0;
+Semaphore incrementCounter;
 
 class SomeThread: public Thread{
 private:
@@ -18,11 +19,13 @@ public:
   void run() {
 	while(1){
 		
-		cnt += 50;
-		callCount += 50;
+    incrementCounter.enter();
+		cnt++;
+    incrementCounter.leave();
+
+		callCount++;
 		xprintf("Process %s called.\n localCount*2: %ld, globalCount: %ld\n",name,callCount*2,cnt);
 		FFLUSH();
-		suspendCallerUntil(1);
 	}
   }
 };
