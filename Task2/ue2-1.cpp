@@ -1,30 +1,32 @@
 #include "rodos.h"
 
-static Application module01("Uebung2", 2000);
+static Application module01("Uebung2-1", 2000);
 
-volatile long int cnt = 0;
+volatile long int globalCount = 0;
+volatile long int firstCounter = 0;
+volatile long int secondCounter = 0;
+
 Semaphore incrementCounter;
 
 class SomeThread: public Thread{
-private:
-  long int callCount;
 public:
   
   SomeThread(const char * name) : Thread(name, 25) {
   }
-  void init(){
-	callCount = 0;
-  }
-
+  
   void run() {
 	while(1){
-		
+   
     incrementCounter.enter();
-		cnt++;
+     if(strcmp(name,"1")){
+      firstCounter += 2;
+    }else{
+      secondCounter += 2;
+    }
+		globalCount += 2;
     incrementCounter.leave();
 
-		callCount++;
-		xprintf("Process %s called.\n localCount*2: %ld, globalCount: %ld\n",name,callCount*2,cnt);
+		xprintf("Process %s called.\n Sum: %ld, globalCount: %ld, Diff: %ld\n",name,firstCounter + secondCounter,globalCount, firstCounter + secondCounter - globalCount);
 		FFLUSH();
 	}
   }
