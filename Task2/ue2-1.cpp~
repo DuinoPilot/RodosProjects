@@ -25,7 +25,7 @@ public:
     }
 		globalCount += 50;
     //incrementCounter.leave();
-	
+
 		xprintf("Process %s called.\n Sum: %ld, globalCount: %ld, Diff: %ld\n",name,firstCounter + secondCounter,globalCount, firstCounter + secondCounter - globalCount);
 		FFLUSH();
 	}
